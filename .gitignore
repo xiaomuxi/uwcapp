@@ -1,0 +1,15 @@
+*.iml
+*.jks
+.gradle
+/local.properties
+.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+
