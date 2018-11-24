@@ -41,7 +41,6 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
     NetworkController networkController;
     BalanceListAdapter balanceListAdapter;
     UserInfo userInfo;
-    String type;
     private int pageNum = 1;
     private int pageSize = 15;
     private boolean hasMore = true;
@@ -53,15 +52,13 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
         userInfo = SPController.getInstance().getUserInfo();
         setContentView(R.layout.activity_balance_detail);
         ButterKnife.bind(this);
-        type = getIntent().getStringExtra("TYPE");
     }
 
     @Override
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
-        String title = StringUtils.equals(type, "ACCOUNT") ? "余额明细" : "保证金明细";
-        setTopTitleAndLeft(title);
+        setTopTitleAndLeft("余额明细");
     }
 
     @Override
@@ -124,7 +121,7 @@ public class BalanceDetailActivity extends BaseActivity implements LoadMoreListV
     private void initData() {
         GetBalanceDetailListRequest request = new GetBalanceDetailListRequest();
         GetBalanceDetailListRequest.Query query = new GetBalanceDetailListRequest.Query();
-        query.setApiId(StringUtils.equals(type, "ACCOUNT") ? "HC0206201" : "HC0206200");
+        query.setApiId("HC0206201");
         query.setDEVICEID(userInfo.getDeviceId());
         query.setUserid(userInfo.getUserId());
         query.setCustomerId(userInfo.getUserId());

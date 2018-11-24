@@ -3,11 +3,9 @@ package com.weddingcar.user.function.main.activity;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,12 +16,12 @@ import com.weddingcar.user.common.base.BaseActivity;
 import com.weddingcar.user.common.utils.LogUtils;
 import com.weddingcar.user.common.utils.StatusBarUtils;
 import com.weddingcar.user.common.utils.UIUtils;
+import com.weddingcar.user.function.wallet.activity.WalletActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener{
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -37,6 +35,18 @@ public class HomeActivity extends BaseActivity
     LinearLayout mTopLeft;
     @BindView(R.id.iv_left)
     ImageView mTopLeftImage;
+    @BindView(R.id.tv_order)
+    TextView tv_order;
+    @BindView(R.id.tv_wallet)
+    TextView tv_wallet;
+    @BindView(R.id.tv_housekeeper)
+    TextView tv_housekeeper;
+    @BindView(R.id.tv_setting)
+    TextView tv_setting;
+    @BindView(R.id.tv_apply_account)
+    TextView tv_apply_account;
+    @BindView(R.id.tv_recruit)
+    TextView tv_recruit;
 
     LinearLayout mStatusBarView;
 
@@ -80,8 +90,14 @@ public class HomeActivity extends BaseActivity
                 }
             }
         });
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        tv_order.setOnClickListener(this);
+        tv_wallet.setOnClickListener(this);
+        tv_housekeeper.setOnClickListener(this);
+        tv_setting.setOnClickListener(this);
+        tv_apply_account.setOnClickListener(this);
+        tv_recruit.setOnClickListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -106,25 +122,29 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_order:
+    public void onClick(View v) {
+        drawer.closeDrawer(GravityCompat.START);
+        switch (v.getId()) {
+            case R.id.tv_order:
+                UIUtils.showToastSafe("订单");
                 break;
-            case R.id.nav_wallet:
+            case R.id.tv_wallet:
+                startActivity(new Intent(this, WalletActivity.class));
                 break;
-            case R.id.nav_housekeeper:
+            case R.id.tv_housekeeper:
+                UIUtils.showToastSafe("管家");
                 break;
-            case R.id.nav_setting:
+            case R.id.tv_setting:
                 startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.tv_apply_account:
+                startActivity(new Intent(this, EnterpriseAccountActivity.class));
+                break;
+            case R.id.tv_recruit:
+                UIUtils.showToastSafe("车主招募");
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
-
 }

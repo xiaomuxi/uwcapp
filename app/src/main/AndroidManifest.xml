@@ -279,6 +279,8 @@
         <activity android:name=".function.wallet.activity.WalletActivity" />
         <activity android:name=".function.wallet.activity.BalanceDetailActivity" />
         <activity android:name=".function.wallet.activity.IncomeDetailActivity" />
+        <activity android:name=".function.main.activity.EnterpriseAccountActivity" />
+        <activity android:name=".function.wallet.activity.DrawCashActivity" />
     </application>
 
 </manifest>

@@ -24,20 +24,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
     @BindView(R.id.tv_account_balance)
     TextView tv_account_balance;
-    //明细
-    @BindView(R.id.tv_account_detail)
-    TextView tv_account_detail;
     //提现
     @BindView(R.id.tv_account_cash)
     TextView tv_account_cash;
-    @BindView(R.id.tv_bond_detail)
-    TextView tv_bond_detail;
-    @BindView(R.id.tv_bond_balance)
-    TextView tv_bond_balance;
-    @BindView(R.id.tv_bond_cash)
-    TextView tv_bond_cash;
-    @BindView(R.id.tv_bond_recharge)
-    TextView tv_bond_recharge;
 
     UserInfo userInfo;
     NetworkController networkController;
@@ -55,6 +44,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
         setTopTitleAndLeft("钱包");
+        setTopRightImage(R.drawable.btn_detail);
     }
 
     @Override
@@ -64,12 +54,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         networkController.attachView(getBalanceInfoView);
 
         tv_account_balance.setText("--");
-        tv_bond_balance.setText("--");
-        tv_account_detail.setOnClickListener(this);
+        mTopRight.setOnClickListener(this);
         tv_account_cash.setOnClickListener(this);
-        tv_bond_detail.setOnClickListener(this);
-        tv_bond_cash.setOnClickListener(this);
-        tv_bond_recharge.setOnClickListener(this);
     }
 
     @Override
@@ -97,7 +83,6 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             String accountBalance = StringUtils.isEmpty(data.getIntegration() + "") ? "--" : data.getIntegration() + "";
             String bondBalance = StringUtils.isEmpty(data.getCashDeposit() + "") ? "--" : data.getCashDeposit() + "";
             tv_account_balance.setText(accountBalance);
-            tv_bond_balance.setText(bondBalance);
         }
 
         @Override
@@ -124,25 +109,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_account_detail:
+            case R.id.right:
                 //账户余额明细
-                goToBalanceDetailActivity("ACCOUNT");
+                goToBalanceDetailActivity();
                 break;
             case R.id.tv_account_cash:
                 //账户余额提现
-//                goToDrawCashActivity("ACCOUNT");
-                break;
-            case R.id.tv_bond_detail:
-                //保证金余额明细
-                goToBalanceDetailActivity("BOND");
-                break;
-            case R.id.tv_bond_cash:
-                //保证金余额提现
-//                goToDrawCashActivity("BOND");
-                break;
-            case R.id.tv_bond_recharge:
-                //保证金余额充值
-//                goToRechargeActivity();
+                goToDrawCashActivity();
                 break;
         }
     }
@@ -151,15 +124,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 //        startActivity(new Intent(this, RechargeActivity.class));
 //    }
 
-    private void goToBalanceDetailActivity(String type) {
+    private void goToBalanceDetailActivity() {
         Intent intent = new Intent(this, BalanceDetailActivity.class);
-        intent.putExtra("TYPE", type);
         startActivity(intent);
     }
 
-//    private void goToDrawCashActivity(String type) {
-//        Intent intent = new Intent(this, DrawCashActivity.class);
-//        intent.putExtra("TYPE", type);
-//        startActivity(intent);
-//    }
+    private void goToDrawCashActivity() {
+        Intent intent = new Intent(this, DrawCashActivity.class);
+        startActivity(intent);
+    }
 }

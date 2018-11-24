@@ -26,6 +26,7 @@ import com.weddingcar.user.R;
 import com.weddingcar.user.common.ui.MaterialDialog;
 import com.weddingcar.user.common.ui.SpinView;
 import com.weddingcar.user.common.utils.LogUtils;
+import com.weddingcar.user.common.utils.StatusBarUtils;
 import com.weddingcar.user.common.utils.UIUtils;
 
 
@@ -171,6 +172,7 @@ public class BaseActivity extends AppCompatActivity {
             mTopBarView = (LinearLayout) UIUtils.inflate(this, layoutId);
             mActionBar.addView(mTopBarView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
+            StatusBarUtils.StatusBarLightMode(this);
         }
     }
 
