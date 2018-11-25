@@ -14,6 +14,7 @@ public class UserInfo {
     private String deviceId;
     private String carModelId;
     private String carBrandId;
+    private String avatar;
 
     public String getUserId() {
         return UserId;
@@ -62,6 +63,14 @@ public class UserInfo {
         this.carBrandId = carBrandId;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -71,6 +80,7 @@ public class UserInfo {
                 ", deviceId='" + deviceId + '\'' +
                 ", carModelId='" + carModelId + '\'' +
                 ", carBrandId='" + carBrandId + '\'' +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 }

@@ -22,7 +22,7 @@
             android:text="头像"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/text_black"/>
-        <com.weddingcar.driver.common.ui.CircleImageView
+        <com.weddingcar.user.common.ui.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -98,6 +98,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimen_15"

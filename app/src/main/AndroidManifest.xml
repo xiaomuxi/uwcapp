@@ -281,6 +281,10 @@
         <activity android:name=".function.wallet.activity.IncomeDetailActivity" />
         <activity android:name=".function.main.activity.EnterpriseAccountActivity" />
         <activity android:name=".function.wallet.activity.DrawCashActivity" />
+        <activity android:name=".function.housekeeper.activity.HousekeeperActivity" />
+        <activity android:name=".function.housekeeper.activity.ChartActivity" />
+        <activity android:name=".function.user.activity.MineInfoActivity" />
+        <activity android:name=".function.user.activity.ModifyPhoneActivity" />
     </application>
 
 </manifest>
