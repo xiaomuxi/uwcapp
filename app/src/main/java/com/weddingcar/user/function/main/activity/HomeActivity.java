@@ -2,15 +2,25 @@ package com.weddingcar.user.function.main.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.network.library.bean.mine.request.GetBalanceInfoRequest;
@@ -33,10 +43,13 @@ import com.weddingcar.user.function.housekeeper.activity.HousekeeperActivity;
 import com.weddingcar.user.function.user.activity.MineInfoActivity;
 import com.weddingcar.user.function.wallet.activity.WalletActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener{
+public class HomeActivity extends BaseActivity implements View.OnClickListener, AMapLocationListener {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -71,9 +84,32 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
     @BindView(R.id.ll_header)
     LinearLayout ll_header;
 
+    @BindView(R.id.tv_today)
+    TextView tv_today;
+    @BindView(R.id.tv_complete)
+    TextView tv_complete;
+    @BindView(R.id.tv_ongoing)
+    TextView tv_ongoing;
+    @BindView(R.id.tv_housekeeper_inner)
+    TextView tv_housekeeper_inner;
+    @BindView(R.id.tv_location)
+    TextView tv_location;
+    @BindView(R.id.mv_map)
+    MapView mv_map;
+    @BindView(R.id.ll_wedding)
+    LinearLayout ll_wedding;
+
     LinearLayout mStatusBarView;
     UserInfo userInfo;
     NetworkController networkController;
+    private AMap mAMap;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mv_map.onCreate(savedInstanceState);
+    }
+
     @Override
     protected void init() {
         super.init();
@@ -91,6 +127,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
     protected void initView() {
         super.initView();
         initStatusBar();
+        initMap();
+
         mTopLeft.setVisibility(View.VISIBLE);
         mTopRight.setVisibility(View.VISIBLE);
         mTopRightImage.setVisibility(View.VISIBLE);
@@ -126,10 +164,31 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
         tv_apply_account.setOnClickListener(this);
         tv_recruit.setOnClickListener(this);
         ll_header.setOnClickListener(this);
+        tv_location.setOnClickListener(this);
+        ll_wedding.setOnClickListener(this);
 
         networkController = new NetworkController();
         networkController.attachView(getBalanceInfoView);
         initData();
+    }
+
+    private void initMap() {
+        if (mAMap == null) {
+            mAMap = mv_map.getMap();
+//            mAMap.setOnMarkerClickListener(this);
+        }
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        myLocationStyle.interval(8000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));// 设置圆形的填充颜色
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW) ;//连续定位、且将视角移动到地图中心点，定位蓝点跟随设备移动。（1秒1次定位）
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_car));
+        mAMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+//        mAMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
+        mAMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+        mAMap.getUiSettings().setZoomControlsEnabled(false);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -143,6 +202,25 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
         StatusBarUtils.StatusBarLightMode(this);
         mActionBar.addView(mStatusBarView, 0);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mv_map.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mv_map.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mv_map.onSaveInstanceState(outState);
+    }
+
 
     private void initData() {
         GetBalanceInfoRequest request = new GetBalanceInfoRequest();
@@ -206,6 +284,30 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
     }
 
     @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        System.out.println("YIN---->onLocationChanged");
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                System.out.println("YIN---->success");
+                //定位成功回调信息，设置相关消息
+                amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                amapLocation.getLatitude();//获取纬度
+                amapLocation.getLongitude();//获取经度
+                amapLocation.getAccuracy();//获取精度信息
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date(amapLocation.getTime());
+                df.format(date);//定位时间
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError","location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
+    }
+
+
+    @Override
     public void onClick(View v) {
         drawer.closeDrawer(GravityCompat.START);
         switch (v.getId()) {
@@ -230,7 +332,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
             case R.id.ll_header:
                 startActivity(new Intent(this, MineInfoActivity.class));
                 break;
+            case R.id.tv_location:
+                break;
+            case R.id.ll_wedding:
+                UIUtils.showToastSafe("日期");
+                break;
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mv_map.onDestroy();
     }
 }

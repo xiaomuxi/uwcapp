@@ -44,6 +44,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -70,7 +75,7 @@
         <!-- 高德地图-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="706b2e5f1bf9475016fb10b6362cb235" />
+            android:value="e895da4ce83d3964cd93931ee05e44e3" />
         <!--ali push-->
         <meta-data
             android:name="com.alibaba.app.appkey"
@@ -79,6 +84,7 @@
             android:name="com.alibaba.app.appsecret"
             android:value="06348e8490f3fc669e8b511a22cc36a9" /> <!-- 请填写你自己的appSecret -->
 
+        <service android:name="com.amap.api.location.APSService"/>
         <service
             android:name="com.alibaba.sdk.android.push.MsgService"
             android:exported="false">

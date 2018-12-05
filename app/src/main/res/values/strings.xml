@@ -51,4 +51,5 @@
     <string name="permission_tip">正在请求权限</string>
     <string name="text_calendar_red">红色背景表示当天已有订单</string>
     <string name="text_calendar_orange">橙色背景表示当天无法接单</string>
+    <string name="text_wedding_date">婚礼日期 %s</string>
 </resources>
