@@ -30,6 +30,7 @@ public class VerifyCodeView extends AppCompatTextView {
     private TimerTask mTimerTask;
     private String mInitText; // 初始文本信息
     private OnSendCodeListener mSendCodeListener;
+    private OnEndListener mEndListener;
     private boolean isCount = false;
 
     public VerifyCodeView(Context context) {
@@ -58,6 +59,7 @@ public class VerifyCodeView extends AppCompatTextView {
                 case MESSAGE_TIME_END:
                     mCountDownTime = mMaxTime;
                     isCount = false;
+                    mEndListener.onEndEvent();
                     setSelected(true);
                     setText(mInitText);
                     if(null!= mTimer) {
@@ -122,6 +124,10 @@ public class VerifyCodeView extends AppCompatTextView {
         this.mSendCodeListener = clickListener;
     }
 
+    public void setEndEvent(OnEndListener endListener) {
+        this.mEndListener = endListener;
+    }
+
     public void setMaxTime(int maxTime) {
         this.mMaxTime = maxTime;
         this.mCountDownTime = maxTime;
@@ -137,6 +143,9 @@ public class VerifyCodeView extends AppCompatTextView {
 
     public interface OnSendCodeListener {
         void onStartSend();
+    }
+    public interface OnEndListener {
+        void onEndEvent();
     }
 }
 

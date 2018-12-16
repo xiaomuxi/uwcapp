@@ -50,6 +50,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -70,7 +72,7 @@
         <activity android:name=".function.user.activity.PersonalInfoActivity" />
         <activity android:name=".function.user.activity.RegisterActivity" />
         <activity android:name=".function.user.activity.LoginActivity" />
-        <activity android:name=".function.main.activity.HomeActivity" />
+        <activity android:name=".function.main.activity.HomeActivity" android:launchMode="singleTask" />
 
         <!-- 高德地图-->
         <meta-data
@@ -291,6 +293,20 @@
         <activity android:name=".function.housekeeper.activity.ChartActivity" />
         <activity android:name=".function.user.activity.MineInfoActivity" />
         <activity android:name=".function.user.activity.ModifyPhoneActivity" />
+        <activity android:name=".function.order.activity.OrderActivity" />
+        <activity android:name=".function.main.activity.ChooseCarActivity" />
+        <activity android:name=".function.order.activity.OrderInfoActivity" />
+        <activity android:name=".function.main.activity.ConfirmOrderActivity" />
+        <activity android:name=".function.main.activity.AddressChooseActivity" />
+        <activity android:name=".function.main.activity.AddressActivity" />
+        <activity android:name=".function.main.activity.CarBrandActivity" />
+        <activity android:name=".function.order.activity.CallingOrderInfoActivity" />
+        <activity android:name=".function.order.activity.CarInfoActivity" />
+        <activity android:name=".function.order.activity.PayActivity" />
+        <activity android:name=".function.order.activity.EvaluateActivity" />
+        <activity android:name=".function.order.activity.CompleteOrderInfoActivity" />
+        <activity android:name=".function.order.activity.TodayOrderInfoActivity" />
+        <activity android:name=".function.order.activity.DoneOrderInfoActivity" />
     </application>
 
 </manifest>

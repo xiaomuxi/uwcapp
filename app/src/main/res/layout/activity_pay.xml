@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_white"
+        android:paddingLeft="@dimen/dimen_15"
+        android:paddingRight="@dimen/dimen_15"
+        android:paddingTop="@dimen/dimen_8"
+        android:paddingBottom="@dimen/dimen_8"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dimen_40"
+            android:paddingBottom="@dimen/dimen_20"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剩余支付时间："
+                android:textSize="@dimen/sp_14"
+                android:textColor="@color/text_main_gray"/>
+            <com.weddingcar.user.common.ui.VerifyCodeView
+                android:id="@+id/vcv_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_15"
+                android:text="--"
+                android:textColor="@color/text_main_gray"
+                android:textSize="@dimen/sp_14"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥ --"
+            android:textColor="@color/text_main_red"
+            android:textSize="@dimen/sp_16"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_zfb"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="@dimen/dimen_20"
+        android:layout_marginLeft="@dimen/dimen_25"
+        android:layout_marginRight="@dimen/dimen_25"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/btn_pressed_blue"
+        android:gravity="center"
+        android:text="支付宝"
+        android:textColor="@color/text_white"
+        android:textSize="@dimen/sp_17" />
+
+    <Button
+        android:id="@+id/btn_wx"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:layout_marginLeft="@dimen/dimen_25"
+        android:layout_marginRight="@dimen/dimen_25"
+        android:background="@drawable/btn_pressed_green"
+        android:gravity="center"
+        android:text="微信"
+        android:textColor="@color/text_white"
+        android:textSize="@dimen/sp_17" />
+
+</LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/bg_white"
     android:orientation="horizontal">
-    <com.weddingcar.driver.common.ui.CircleImageView
+    <com.weddingcar.user.common.ui.CircleImageView
         android:id="@+id/iv_header"
         android:layout_margin="@dimen/dimen_15"
         android:layout_width="45dp"

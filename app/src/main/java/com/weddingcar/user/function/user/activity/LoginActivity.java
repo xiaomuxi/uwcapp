@@ -1,6 +1,8 @@
 package com.weddingcar.user.function.user.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -25,21 +27,26 @@ import com.weddingcar.user.common.config.Config;
 import com.weddingcar.user.common.config.IntentConstant;
 import com.weddingcar.user.common.config.ToastConstant;
 import com.weddingcar.user.common.manager.SPController;
+import com.weddingcar.user.common.ui.MaterialDialog;
 import com.weddingcar.user.common.utils.CheckUtils;
 import com.weddingcar.user.common.utils.LogUtils;
 import com.weddingcar.user.common.utils.StringUtils;
 import com.weddingcar.user.common.utils.UIUtils;
 import com.weddingcar.user.function.main.activity.HomeActivity;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by inrokei on 2018/9/4.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, NormalView<LoginEntity> {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, NormalView<LoginEntity>, EasyPermissions.PermissionCallbacks{
 
+    private static final int REQUEST_CODE_PERMISSION = 1004;
     private long exitTime = 0;
 
     @BindView(R.id.et_phone)
@@ -82,6 +89,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         mController = new NetworkController<>();
         mController.attachView(this);
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_tip), REQUEST_CODE_PERMISSION, Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
     }
 
     @Override
@@ -275,6 +285,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onRequestError(String errorMsg, String methodName) {
         LogUtils.i(TAG, errorMsg);
         UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("请前往设置中心，打开定位权限才可以继续使用！");
+        dialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+            }
+        });
+        dialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
 }

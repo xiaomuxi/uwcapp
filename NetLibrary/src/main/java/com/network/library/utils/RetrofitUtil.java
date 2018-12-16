@@ -7,9 +7,6 @@ import com.network.library.bean.BaiduOauthEntity;
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.WeatherEntity;
 import com.network.library.bean.user.response.LoginEntity;
-import com.network.library.bean.user.response.OrderInfoEntity;
-import com.network.library.bean.user.response.OrderRunningListEntity;
-import com.network.library.bean.user.response.OrderWaitListEntity;
 import com.network.library.bean.user.response.RegisterEntity;
 import com.network.library.bean.user.response.RobbingInfoEntity;
 import com.network.library.bean.user.response.SignUpInfoEntity;
@@ -251,13 +248,6 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
-            case HttpAction.ACTION_COMPLETE_ORDER_LIST:
-                mNetworkService.getCompleteOrderList(GsonUtils.jsonToMap(queryContent))
-                        .subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(subscriber);
-                break;
             case HttpAction.ACTION_GET_WX_PAY_ORDER:
                 mNetworkService.getWXPayOrder(GsonUtils.jsonToMap(queryContent))
                         .subscribeOn(Schedulers.io())
@@ -279,15 +269,113 @@ public class RetrofitUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
-            case HttpAction.ACTION_GET_CALENDAR_EVENT:
-                mNetworkService.getCalendarEvent(GsonUtils.jsonToMap(queryContent))
+            case HttpAction.ACTION_GET_ORDER_LIST:
+                mNetworkService.getOrderList(GsonUtils.jsonToMap(queryContent))
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(subscriber);
                 break;
-            case HttpAction.ACTION_OPERATE_CALENDAR_EVENT:
-                mNetworkService.operateCalendarEvent(GsonUtils.jsonToMap(queryContent))
+            case HttpAction.ACTION_GET_ORDER_INFO:
+                mNetworkService.getOrderInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_CAR_MODEL_LIST:
+                mNetworkService.getCarModelList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_CAR_GROUP_LIST:
+                mNetworkService.getCarGroupList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_SEND_ORDER:
+                mNetworkService.sendOrder(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_CONFIRM_ORDER:
+                mNetworkService.confirmOrder(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_INSERT_MAP_INFO:
+                mNetworkService.insertMapInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_ORDER_CAR_LIST:
+                mNetworkService.getOrderCarList(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_LOCK_CAR:
+                mNetworkService.lockCar(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_UPLOAD_CAR_LOCATION:
+                mNetworkService.uploadCarLocation(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_ORDER_PRICE:
+                mNetworkService.getOrderPrice(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_GET_PAY_INFO:
+                mNetworkService.getPayInfo(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_UPDATE_ORDER_PAY_RESULT:
+                mNetworkService.updateOrderPayResult(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_DELETE_ORDER:
+                mNetworkService.removeOrder(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_CANCEL_ORDER:
+                mNetworkService.cancelOrder(GsonUtils.jsonToMap(queryContent))
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(subscriber);
+                break;
+            case HttpAction.ACTION_UPDATE_AGGREGATE_INFO:
+                mNetworkService.updateAggregateInfo(GsonUtils.jsonToMap(queryContent), GsonUtils.jsonToMap(GsonUtils.toJson(body)))
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -313,24 +401,6 @@ public class RetrofitUtil {
     public void baiduOauth(Subscriber<BaiduOauthEntity> subscriber, String client_id, String client_secret) {
         String grant_type = "client_credentials";
         mBaiduOauthService.BaiduOauthToken(grant_type, client_id, client_secret)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-    public void getRunningOrderList(Subscriber<BaseEntity<List<OrderRunningListEntity>>> subscriber, String interfaceCode, String id) {
-        Logger.I("[ getRunningOrderList ] apiId = " + interfaceCode + " , id = " + id);
-        mNetworkService.getRunningOrderList(interfaceCode, id)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-    public void getWaitOrderList(Subscriber<BaseEntity<List<OrderWaitListEntity>>> subscriber, String apiId, String customerId, String state) {
-        Logger.I("[ getWaitOrderList ] apiId = " + apiId + " , customerId = " + customerId + " , state = " + state);
-        mNetworkService.getWaitOrderList(apiId, customerId, state)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -378,26 +448,9 @@ public class RetrofitUtil {
                 .subscribe(subscriber);
     }
 
-//    public void modifyUserInfo(Subscriber<BaseEntity> subscriber, String interfaceCode, String phone, String sex, String name) {
-//        mNetworkService.modifyUserInfo(interfaceCode, phone, sex, name)
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
-
     public void getRobbingList(Subscriber<BaseEntity<List<RobbingInfoEntity>>> subscriber, String apiId, String customerId, String carBrandId, String carModelId) {
         Logger.I("[ getRobbingList ] apiId = " + apiId + " , customerId = " + customerId + " carBrandId = " + carBrandId + " carModelId = " + carModelId);
         mNetworkService.getRobbingList(apiId, customerId, carBrandId, carModelId)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-    public void getOrderInfo(Subscriber<BaseEntity<List<OrderInfoEntity>>> subscriber, String apiId, String orderId) {
-        Logger.I("[ getOrderInfo ] apiId = " + apiId + " , orderId = " + orderId);
-        mNetworkService.getOrderInfo(apiId, orderId)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -416,24 +469,6 @@ public class RetrofitUtil {
     public void cancelSignUp(Subscriber<BaseEntity> subscriber, String apiId, String customerId, String orderId) {
         Logger.I("[ cancelSignUp ] apiId = " + apiId + " , customerId = " + customerId + " OrderID = " + orderId);
         mNetworkService.cancelSignUp(apiId, customerId, orderId)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-    public void deleteInvalidOrder(Subscriber<BaseEntity> subscriber, String apiId, String ID) {
-        Logger.I("[ deleteInvalidOrder ] apiId = " + apiId + " , ID = " + ID);
-        mNetworkService.deleteInvalidOrder(apiId, ID)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-    public void getCompleteOrderList(Subscriber<BaseEntity<List<OrderWaitListEntity>>> subscriber, String apiId, String customerId, String state) {
-        Logger.I("[ getCompleteOrderList ] apiId = " + apiId + " , customerId = " + customerId + " state = " + state);
-        mNetworkService.getCompleteOrderList(apiId, customerId, state)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

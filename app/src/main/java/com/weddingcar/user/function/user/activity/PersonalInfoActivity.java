@@ -1,7 +1,6 @@
 package com.weddingcar.user.function.user.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,6 +31,7 @@ import com.weddingcar.user.common.config.Config;
 import com.weddingcar.user.common.config.IntentConstant;
 import com.weddingcar.user.common.config.ToastConstant;
 import com.weddingcar.user.common.manager.SPController;
+import com.weddingcar.user.common.ui.MaterialDialog;
 import com.weddingcar.user.common.utils.Base64Utils;
 import com.weddingcar.user.common.utils.DrawableUtils;
 import com.weddingcar.user.common.utils.FileUtils;
@@ -313,17 +313,24 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Dialog dialog = new AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage("请前往设置中心，打开相机和存储权限才可以继续使用！")
-                .setPositiveButton("确定", (dialog2, which) -> {
-                    startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
-                })
-                .setNegativeButton(R.string.cancel, (dialog3, which) -> {
-                    dialog3.dismiss();
-                    finish();
-                })
-                .create();
+
+        MaterialDialog  dialog = new MaterialDialog(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("请前往设置中心，打开相机和存储权限才可以继续使用！");
+        dialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+            }
+        });
+        dialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

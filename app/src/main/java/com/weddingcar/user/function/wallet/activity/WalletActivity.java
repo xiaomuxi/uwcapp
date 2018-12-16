@@ -30,6 +30,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
     UserInfo userInfo;
     NetworkController networkController;
+    double allowedMoney;
     @Override
     protected void init() {
         super.init();
@@ -80,6 +81,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         @Override
         public void onSuccess(GetBalanceInfoEntity entity) {
             GetBalanceInfoEntity.Data data = entity.getData().get(0);
+
+            allowedMoney = data.getIntegration();
             String accountBalance = StringUtils.isEmpty(data.getIntegration() + "") ? "--" : data.getIntegration() + "";
             String bondBalance = StringUtils.isEmpty(data.getCashDeposit() + "") ? "--" : data.getCashDeposit() + "";
             tv_account_balance.setText(accountBalance);
@@ -115,14 +118,15 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.tv_account_cash:
                 //账户余额提现
+                if (allowedMoney <= 0) {
+                    UIUtils.showToastSafe("没有可提现的余额");
+                    return;
+                }
                 goToDrawCashActivity();
                 break;
         }
     }
 
-//    private void goToRechargeActivity() {
-//        startActivity(new Intent(this, RechargeActivity.class));
-//    }
 
     private void goToBalanceDetailActivity() {
         Intent intent = new Intent(this, BalanceDetailActivity.class);
@@ -131,6 +135,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
     private void goToDrawCashActivity() {
         Intent intent = new Intent(this, DrawCashActivity.class);
+        intent.putExtra("ALLOWED_MONEY", allowedMoney);
         startActivity(intent);
     }
 }

@@ -6,4 +6,11 @@
         <attr name="circle_border_overlay" format="boolean" />
         <attr name="circle_fill_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="HorizontalListView">
+        <attr name="dividerwidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
 </resources>

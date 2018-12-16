@@ -13,6 +13,15 @@ public class GetCarInfoRequest extends BaseRequest<GetCarInfoRequest.Query, Obje
         private String customerId;
         private String userid;
         private String DEVICEID;
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getApiId() {
             return ApiId;
@@ -53,6 +62,7 @@ public class GetCarInfoRequest extends BaseRequest<GetCarInfoRequest.Query, Obje
                     ", customerId='" + customerId + '\'' +
                     ", userid='" + userid + '\'' +
                     ", DEVICEID='" + DEVICEID + '\'' +
+                    ", id='" + id + '\'' +
                     '}';
         }
     }

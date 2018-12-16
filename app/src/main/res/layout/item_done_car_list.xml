@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/bg_white"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/dimen_15"
+    android:paddingTop="@dimen/dimen_8"
+    android:paddingBottom="@dimen/dimen_8"
+    android:layout_height="match_parent">
+    <com.weddingcar.user.common.ui.CircleImageView
+        android:id="@+id/iv_header"
+        android:layout_width="@dimen/dimen_50"
+        android:layout_height="@dimen/dimen_50" />
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/dimen_11"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="师傅"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/text_order_black"/>
+
+        <TextView
+            android:id="@+id/tv_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_15"
+            android:layout_toRightOf="@id/tv_name"
+            android:drawableLeft="@drawable/ic_star_small_yellow"
+            android:text="5.0"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"/>
+
+        <TextView
+            android:id="@+id/tv_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_below="@id/tv_name"
+            android:text="黑色"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"/>
+        <TextView
+            android:id="@+id/tv_plate_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_toRightOf="@id/tv_color"
+            android:layout_below="@id/tv_name"
+            android:text="--"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"/>
+
+        <TextView
+            android:id="@+id/tv_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_toRightOf="@id/tv_plate_number"
+            android:layout_below="@id/tv_name"
+            android:text="--单"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/text_main_gray"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dimen_15"
+        android:text="¥ --"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/text_main_red"/>
+</LinearLayout>

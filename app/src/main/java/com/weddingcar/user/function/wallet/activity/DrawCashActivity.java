@@ -3,6 +3,7 @@ package com.weddingcar.user.function.wallet.activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.network.library.bean.mine.request.DrawCashRequest;
 import com.network.library.bean.mine.response.DrawCashEntity;
@@ -14,6 +15,7 @@ import com.weddingcar.user.common.base.BaseActivity;
 import com.weddingcar.user.common.bean.UserInfo;
 import com.weddingcar.user.common.config.ToastConstant;
 import com.weddingcar.user.common.manager.SPController;
+import com.weddingcar.user.common.utils.CheckUtils;
 import com.weddingcar.user.common.utils.StringUtils;
 import com.weddingcar.user.common.utils.UIUtils;
 
@@ -30,13 +32,19 @@ public class DrawCashActivity extends BaseActivity implements View.OnClickListen
     EditText et_money;
     @BindView(R.id.btn_confirm)
     Button btn_confirm;
+    @BindView(R.id.tv_allowed_money)
+    TextView tv_allowed_money;
+    @BindView(R.id.tv_all)
+    TextView tv_all;
 
+    double allowedMoney;
     UserInfo userInfo;
     NetworkController networkController;
     @Override
     protected void init() {
         super.init();
         userInfo = SPController.getInstance().getUserInfo();
+        allowedMoney = getIntent().getDoubleExtra("ALLOWED_MONEY", 0);
         setContentView(R.layout.activity_draw_cash);
         ButterKnife.bind(this);
     }
@@ -57,6 +65,7 @@ public class DrawCashActivity extends BaseActivity implements View.OnClickListen
 
         btn_confirm.setOnClickListener(this);
 
+        tv_allowed_money.setText(getResources().getString(R.string.text_allowed_money, allowedMoney+""));
     }
 
 
@@ -91,6 +100,12 @@ public class DrawCashActivity extends BaseActivity implements View.OnClickListen
 
     private void drawCashEvent() {
         if (!checkInput()) {
+            return;
+        }
+        String money = et_account.getText().toString().trim();
+        double targetMoney = Double.parseDouble(money);
+        if (targetMoney > allowedMoney) {
+            UIUtils.showToastSafe("最多允许提现"+allowedMoney+"元");
             return;
         }
 
@@ -129,6 +144,11 @@ public class DrawCashActivity extends BaseActivity implements View.OnClickListen
             return false;
         }
 
+        if (!CheckUtils.isNumber(money)) {
+            UIUtils.showToastSafe("金额格式不正确，请输入数字金额！");
+            return false;
+        }
+
         return true;
     }
 
@@ -137,6 +157,9 @@ public class DrawCashActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.btn_confirm:
                 drawCashEvent();
+                break;
+            case R.id.tv_all:
+                et_money.setText(allowedMoney + "");
                 break;
         }
     }

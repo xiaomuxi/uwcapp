@@ -51,5 +51,24 @@
     <string name="permission_tip">正在请求权限</string>
     <string name="text_calendar_red">红色背景表示当天已有订单</string>
     <string name="text_calendar_orange">橙色背景表示当天无法接单</string>
-    <string name="text_wedding_date">婚礼日期 %s</string>
+    <string name="text_wedding_date">婚礼日期 \n%s</string>
+    <string name="text_item_order_num">订单号：%s</string>
+    <string name="text_order_money">¥ %s</string>
+    <string name="text_car_model_money">参考价：%s元</string>
+    <string name="text_car_model_count">当前日期空闲：%s辆</string>
+    <string name="text_car_group_title">%1$s：%2$s元(5小时50公里参考价)</string>
+    <string name="text_car_group_main">主婚车：%1$s (%2$s)辆</string>
+    <string name="text_car_group_sub">副婚车：%1$s (%2$s)辆</string>
+    <string name="text_estimate_km">预计里程：%s公里</string>
+    <string name="text_allowed_money">可提现金额%s元</string>
+    <string name="text_car_hours">%s小时</string>
+    <string name="text_car_km">%s公里</string>
+    <string name="text_hours">%s小时</string>
+    <string name="text_km">%s公里</string>
+    <string name="text_view_enroll_car_count">查看报名车辆(%s)</string>
+    <string name="text_choosed_car_count">待支付  已选%s辆</string>
+    <string name="text_sign_up_count">当前报名车辆：%s辆</string>
+    <string name="text_current_price">当前平均价：%s元</string>
+    <string name="text_btn_count_money">已选 %1$s 辆 合计：%2$s 元</string>
+    <string name="text_over_money">当天超出费用: %1$s/小时 %2$s/公里</string>
 </resources>
