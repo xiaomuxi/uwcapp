@@ -7,12 +7,12 @@ import java.util.List;
 
 public class CarGroupEntity extends BaseEntity<List<CarGroupEntity.Data>>{
 
-    public static class Data implements Serializable{
-
+    public static class Data implements Serializable {
 
         /**
          * ID : PK1700032
          * CarFollowID : CX00067
+         * ImagePathFollow : PK170003218120311023259.PNG
          * Name : 奔驰S+奥迪A6L
          * ImagePathMain : PK170003218120311023257.PNG
          * CarHeadCount : 1
@@ -25,6 +25,7 @@ public class CarGroupEntity extends BaseEntity<List<CarGroupEntity.Data>>{
 
         private String ID;
         private String CarFollowID;
+        private String ImagePathFollow;
         private String Name;
         private String ImagePathMain;
         private int CarHeadCount;
@@ -48,6 +49,14 @@ public class CarGroupEntity extends BaseEntity<List<CarGroupEntity.Data>>{
 
         public void setCarFollowID(String CarFollowID) {
             this.CarFollowID = CarFollowID;
+        }
+
+        public String getImagePathFollow() {
+            return ImagePathFollow;
+        }
+
+        public void setImagePathFollow(String ImagePathFollow) {
+            this.ImagePathFollow = ImagePathFollow;
         }
 
         public String getName() {
@@ -112,6 +121,23 @@ public class CarGroupEntity extends BaseEntity<List<CarGroupEntity.Data>>{
 
         public void setCarHeadID(String CarHeadID) {
             this.CarHeadID = CarHeadID;
+        }
+
+        @Override
+        public String toString() {
+            return "Data{" +
+                    "ID='" + ID + '\'' +
+                    ", CarFollowID='" + CarFollowID + '\'' +
+                    ", ImagePathFollow='" + ImagePathFollow + '\'' +
+                    ", Name='" + Name + '\'' +
+                    ", ImagePathMain='" + ImagePathMain + '\'' +
+                    ", CarHeadCount=" + CarHeadCount +
+                    ", CarHeadName='" + CarHeadName + '\'' +
+                    ", CarFollowCount=" + CarFollowCount +
+                    ", CarFollowName='" + CarFollowName + '\'' +
+                    ", PriceReference=" + PriceReference +
+                    ", CarHeadID='" + CarHeadID + '\'' +
+                    '}';
         }
     }
 }

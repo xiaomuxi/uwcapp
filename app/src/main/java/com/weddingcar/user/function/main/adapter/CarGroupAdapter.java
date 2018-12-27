@@ -30,9 +30,9 @@ public class CarGroupAdapter extends MyBaseAdapter<CarGroupEntity.Data>{
         CarGroupEntity.Data item = getItem(position);
 
         TextView tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-        ImageView iv_car = (ImageView) convertView.findViewById(R.id.iv_car);
-//        ImageView iv_car1 = (ImageView) convertView.findViewById(R.id.iv_car1);
-//        ImageView iv_car2 = (ImageView) convertView.findViewById(R.id.iv_car2);
+//        ImageView iv_car = (ImageView) convertView.findViewById(R.id.iv_car);
+        ImageView iv_car1 = (ImageView) convertView.findViewById(R.id.iv_car1);
+        ImageView iv_car2 = (ImageView) convertView.findViewById(R.id.iv_car2);
         TextView tv_car1 = (TextView) convertView.findViewById(R.id.tv_car1);
         TextView tv_car2 = (TextView) convertView.findViewById(R.id.tv_car2);
 
@@ -41,7 +41,8 @@ public class CarGroupAdapter extends MyBaseAdapter<CarGroupEntity.Data>{
         tv_car2.setText(mContext.getResources().getString(R.string.text_car_group_sub, item.getCarFollowName(), item.getCarFollowCount()+""));
 
         RequestOptions options = new RequestOptions();
-        Glide.with(UIUtils.getContext()).load(Config.getCarBrandsBaseUrl() + item.getImagePathMain()).apply(options).into(iv_car);
+        Glide.with(UIUtils.getContext()).load(Config.getCarModelUrl() + item.getImagePathMain()).apply(options).into(iv_car1);
+        Glide.with(UIUtils.getContext()).load(Config.getCarModelUrl() + item.getImagePathFollow()).apply(options).into(iv_car2);
         return convertView;
     }
 }

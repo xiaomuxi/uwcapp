@@ -14,6 +14,7 @@ public class Config {
     private static final String APP_BASE_URL_DEV = "http://139.196.254.89:8080/";
     private static final String APP_BASE_URL_TEST = "http://139.196.254.89:8080/";
     private static final String APP_BASE_URL_PRO = "http://139.196.254.89:8080/";
+    private static final String APP_BASE_URL_USER_Model = "http://139.196.254.89:8080/LJTP/Model/";
     private static final String APP_BASE_URL_USER_AVATOR = "http://139.196.254.89:8080/LJTP/CATP/";
     private static final String APP_BASE_URL_CAR_BRANDS = "http://139.196.254.89:8080/LJTP/Logo/";
     public static final String HX_USER_PASSWORD = "12345678";
@@ -62,6 +63,10 @@ public class Config {
 
     public static String getCarBrandsBaseUrl() {
         return APP_BASE_URL_CAR_BRANDS;
+    }
+
+    public static String getCarModelUrl() {
+        return APP_BASE_URL_USER_Model;
     }
 
     public static String getUserAvatorBaseUrl() {

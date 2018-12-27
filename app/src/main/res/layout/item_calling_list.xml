@@ -43,7 +43,7 @@
         android:paddingTop="@dimen/dimen_15"
         android:paddingBottom="@dimen/dimen_15"
         android:orientation="horizontal">
-        <com.weddingcar.user.common.ui.CircleImageView
+        <ImageView
             android:id="@+id/iv_header"
             android:layout_width="@dimen/dimen_61"
             android:layout_height="@dimen/dimen_61"

@@ -12,9 +12,10 @@ import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.network.library.bean.BaseEntity;
-import com.network.library.bean.mine.request.UpdatePayResultRequest;
 import com.network.library.bean.mine.response.WXPayOrderEntity;
 import com.network.library.bean.order.request.GetPayInfoRequest;
+import com.network.library.bean.order.request.OrderPayResultRequest;
+import com.network.library.bean.order.request.PayOrderRequest;
 import com.network.library.bean.order.response.PayInfoEntity;
 import com.network.library.constant.HttpAction;
 import com.network.library.controller.NetworkController;
@@ -136,11 +137,11 @@ public class PayActivity extends BaseActivity implements View.OnClickListener, I
             if (TextUtils.equals(resultStatus, "9000")) {
                 // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                 UIUtils.showToastSafe("支付成功");
-                updatePayResult("成功");
+                updatePayResult("1");
             } else {
                 // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                 UIUtils.showToastSafe("支付失败");
-                updatePayResult("失败");
+                updatePayResult("0");
             }
         };
     };
@@ -285,41 +286,39 @@ public class PayActivity extends BaseActivity implements View.OnClickListener, I
         api.sendReq(request);
     }
 
-//    private void getPayOrder(String type) {
-//        if (!checkInput()) {
-//            return;
-//        }
-//
-//        PayRequest request = new PayRequest();
-//        PayRequest.Query query = new PayRequest.Query();
-//        query.setApiId("HC020620");
-//        query.setUserid(userInfo.getUserId());
-//        query.setCustomerId(userInfo.getUserId());
-//        query.setDEVICEID(userInfo.getDeviceId());
-//        query.setType(type);
-//        query.setAmount(et_money.getText().toString().trim());
-//        request.setQuery(query);
-//
-//        switch (type) {
-//            case "1":
-//                getALIPayOrderController.sendRequest(HttpAction.ACTION_GET_ALI_PAY_ORDER, request);
-//                break;
-//            case "2":
-//                getWXPayOrderController.sendRequest(HttpAction.ACTION_GET_WX_PAY_ORDER, request);
-//                break;
-//            default:
-//                UIUtils.showToastSafe("不支持该支付方式");
-//                break;
-//        }
-//    }
+    private void getPayOrder(String type) {
+
+        PayOrderRequest request = new PayOrderRequest();
+        PayOrderRequest.Query query = new PayOrderRequest.Query();
+        query.setApiId("HC020308");
+        query.setID(orderId);
+        query.setIDS(type);
+        query.setCustomerID(userInfo.getUserId());
+        query.setIsNeedInsurance("0");
+        query.setNameMan("0");
+        query.setNameWoman("0");
+        query.setIdcardMan("0");
+        query.setIdcardWoman("0");
+        request.setQuery(query);
+
+        switch (type) {
+            case "1":
+                getALIPayOrderController.sendRequest(HttpAction.ACTION_GET_ALI_PAY_ORDER, request);
+                break;
+            case "2":
+                getWXPayOrderController.sendRequest(HttpAction.ACTION_GET_WX_PAY_ORDER, request);
+                break;
+            default:
+                UIUtils.showToastSafe("不支持该支付方式");
+                break;
+        }
+    }
 
     private void updatePayResult(String result) {
-        UpdatePayResultRequest request = new UpdatePayResultRequest();
-        UpdatePayResultRequest.Query query = new UpdatePayResultRequest.Query();
-        query.setApiId("HC020650");
-        query.setUserid(userInfo.getUserId());
-        query.setID(userInfo.getUserId());
-        query.setDEVICEID(userInfo.getDeviceId());
+        OrderPayResultRequest request = new OrderPayResultRequest();
+        OrderPayResultRequest.Query query = new OrderPayResultRequest.Query();
+        query.setApiId("HC020601");
+        query.setOrderId(orderId);
         query.setReslut(result);
         request.setQuery(query);
 
@@ -331,12 +330,10 @@ public class PayActivity extends BaseActivity implements View.OnClickListener, I
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_zfb:
-                UIUtils.showToastSafe("支付宝支付");
-//                getPayOrder("1");
+                getPayOrder("1");
                 break;
             case R.id.btn_wx:
-                UIUtils.showToastSafe("微信支付");
-//                getPayOrder("2");
+                getPayOrder("2");
                 break;
         }
     }
@@ -361,15 +358,15 @@ public class PayActivity extends BaseActivity implements View.OnClickListener, I
             switch (baseResp.errCode) {
                 case 0:
                     UIUtils.showToastSafe("支付成功");
-                    updatePayResult("成功");
+                    updatePayResult("1");
                     break;
                 case -2:
                     UIUtils.showToastSafe("已取消支付");
-                    updatePayResult("取消");
+                    updatePayResult("0");
                     break;
                 default:
                     UIUtils.showToastSafe("支付失败");
-                    updatePayResult("失败");
+                    updatePayResult("0");
                     break;
             }
         }

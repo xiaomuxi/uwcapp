@@ -2,6 +2,8 @@ package com.weddingcar.user.function.main.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,12 +24,21 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
+import com.network.library.bean.main.request.NearCarListRequest;
+import com.network.library.bean.main.response.CarListEntity;
 import com.network.library.bean.mine.request.GetBalanceInfoRequest;
 import com.network.library.bean.mine.response.GetBalanceInfoEntity;
 import com.network.library.constant.HttpAction;
@@ -44,15 +55,14 @@ import com.weddingcar.user.common.utils.LogUtils;
 import com.weddingcar.user.common.utils.StatusBarUtils;
 import com.weddingcar.user.common.utils.StringUtils;
 import com.weddingcar.user.common.utils.UIUtils;
-import com.weddingcar.user.function.housekeeper.activity.HousekeeperActivity;
 import com.weddingcar.user.function.order.activity.OrderActivity;
-import com.weddingcar.user.function.order.activity.OrderInfoActivity;
 import com.weddingcar.user.function.user.activity.MineInfoActivity;
 import com.weddingcar.user.function.wallet.activity.WalletActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,6 +126,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     LinearLayout mStatusBarView;
     UserInfo userInfo;
     NetworkController networkController;
+    NetworkController carListController;
     private AMap mAMap;
     TimePickerView pvTime;
     public AMapLocationClient mLocationClient;
@@ -147,7 +158,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         initStatusBar();
         initMap();
         initLocation();
-
         mTopLeft.setVisibility(View.VISIBLE);
         mTopRight.setVisibility(View.VISIBLE);
         mTopRightImage.setVisibility(View.VISIBLE);
@@ -162,7 +172,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         mTopRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIUtils.showToastDebug("消息");
+                startActivity(new Intent(HomeActivity.this, MessageActivity.class));
             }
         });
         mTopLeft.setOnClickListener(new View.OnClickListener() {
@@ -193,9 +203,21 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         tv_group.setOnClickListener(this);
 
         networkController = new NetworkController();
+        carListController = new NetworkController();
         networkController.attachView(getBalanceInfoView);
+        carListController.attachView(getCarListView);
         initData();
         initTimePicker();
+        initNearCarList();
+    }
+
+    private void initNearCarList() {
+        NearCarListRequest request = new NearCarListRequest();
+        NearCarListRequest.Query query = new NearCarListRequest.Query();
+        query.setApiId("HC040004");
+        request.setQuery(query);
+
+        carListController.sendRequest(HttpAction.ACTION_GET_NEAR_CAR_LIST, request);
     }
 
     private void initTimePicker() {
@@ -337,6 +359,43 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         }
     };
 
+    private NormalView<CarListEntity> getCarListView = new NormalView<CarListEntity>() {
+        @Override
+        public void onSuccess(CarListEntity entity) {
+            List<CarListEntity.Data> dataList = entity.getData();
+            System.out.println("getCarListView----->");
+            System.out.println(dataList.toString());
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_car);
+            LatLngBounds.Builder bounds = LatLngBounds.builder();
+            for (int i = 0; i < dataList.size(); i ++) {
+                LatLng latLng = new LatLng(Double.parseDouble(dataList.get(i).getLatitude()), Double.parseDouble(dataList.get(i).getLongitude()));
+                mAMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                bounds.include(latLng);
+            }
+            mAMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
+        }
+
+        @Override
+        public void showLoading() {
+
+        }
+
+        @Override
+        public void hideLoading() {
+
+        }
+
+        @Override
+        public void onRequestSuccess() {
+
+        }
+
+        @Override
+        public void onRequestError(String errorMsg, String methodName) {
+            UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+        }
+    };
+
 
     @Override
     public void onBackPressed() {
@@ -365,20 +424,56 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    private void openChating(){
+        if (ChatClient.getInstance().isLoggedInBefore()){
+            //已经登陆，直接进入会话
+            Intent chatIntent = new IntentBuilder(mContext)
+                    .setServiceIMNumber("kefu001")
+                    .build();
+            startActivity(chatIntent);
+
+        }else {
+            System.out.println("正在登陆---》");
+            UserInfo userInfo = SPController.getInstance().getUserInfo();
+            EMClient.getInstance().login(userInfo.getUserId(), Config.HX_USER_PASSWORD, new EMCallBack() {//回调
+                @Override
+                public void onSuccess() {
+                    //已经登陆，直接进入会话
+                    Intent chatIntent = new IntentBuilder(mContext)
+                            .setServiceIMNumber("kefu001")
+                            .build();
+                    startActivity(chatIntent);
+                }
+
+                @Override
+                public void onProgress(int progress, String status) {
+
+                }
+
+                @Override
+                public void onError(int code, String message) {
+                    UIUtils.showToastSafe("连接失败");
+                }
+            });
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
         drawer.closeDrawer(GravityCompat.START);
         switch (v.getId()) {
             case R.id.tv_order:
-                startActivity(new Intent(this, OrderInfoActivity.class));
+                startActivity(new Intent(this, OrderActivity.class));
                 break;
             case R.id.tv_wallet:
                 startActivity(new Intent(this, WalletActivity.class));
                 break;
             case R.id.tv_housekeeper_inner:
+                openChating();
+                break;
             case R.id.tv_housekeeper:
-                startActivity(new Intent(this, HousekeeperActivity.class));
+                openChating();
                 break;
             case R.id.tv_setting:
                 startActivity(new Intent(this, SettingActivity.class));

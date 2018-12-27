@@ -21,7 +21,7 @@ public class DoneCarListAdapter extends MyBaseAdapter<OrderCarListEntity.Data.Mo
 
     @Override
     protected int setLayoutRes() {
-        return R.layout.item_order_car_list;
+        return R.layout.item_done_car_list;
     }
 
     @Override

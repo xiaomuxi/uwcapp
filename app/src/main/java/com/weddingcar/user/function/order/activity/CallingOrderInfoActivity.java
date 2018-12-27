@@ -23,6 +23,7 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.network.library.bean.BaseEntity;
+import com.network.library.bean.order.request.DeleteOrderRequest;
 import com.network.library.bean.order.request.LockCarRequest;
 import com.network.library.bean.order.request.OrderCarListRequest;
 import com.network.library.bean.order.request.OrderInfoRequest;
@@ -41,6 +42,7 @@ import com.weddingcar.user.common.config.ToastConstant;
 import com.weddingcar.user.common.manager.SPController;
 import com.weddingcar.user.common.map.LocationBean;
 import com.weddingcar.user.common.ui.CircleImageView;
+import com.weddingcar.user.common.ui.MaterialDialog;
 import com.weddingcar.user.common.utils.StringUtils;
 import com.weddingcar.user.common.utils.UIUtils;
 import com.weddingcar.user.function.main.activity.AddressActivity;
@@ -109,6 +111,7 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
     NetworkController orderInfoController;
     NetworkController orderCarListController;
     NetworkController normalController;
+    NetworkController cancelController;
     UserInfo userInfo;
     private AMap mAMap;
     LocationBean groomLocation = null;
@@ -132,7 +135,8 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
     protected void initActionBar() {
         super.initActionBar();
         setActionBar(R.layout.common_top_bar);
-        setTopTitleAndLeft("订单详情");
+        setTopTitleAndLeftAndRight("订单详情");
+        setTopRightText("取消");
     }
 
     @Override
@@ -147,7 +151,10 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
         orderCarListController.attachView(getOrderCarListView);
         normalController = new NetworkController();
         normalController.attachView(normalView);
+        cancelController = new NetworkController();
+        cancelController.attachView(cancelView);
 
+        mTopRight.setOnClickListener(this);
         ll_map_info_title.setOnClickListener(this);
         tv_pay.setOnClickListener(this);
         tv_count_money.setText(getResources().getString(R.string.text_btn_count_money, "0", "0"));
@@ -412,11 +419,12 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
     private NormalView<BaseEntity<String>> normalView = new NormalView<BaseEntity<String>>() {
         @Override
         public void onSuccess(BaseEntity<String> entity) {
-            System.out.println("normalView---->"+entity.getData());
+            System.out.println("normalView---->"+carRequestIndex+entity.getData());
+            System.out.println(carRequestIndex);
             if (carRequestIndex == 1) {
                 carRequestIndex = 0;
                 hideProcess();
-                Intent intent = new Intent();
+                Intent intent = new Intent(mContext, PayActivity.class);
                 intent.putExtra("ORDER_ID", orderInfo.getCode());
                 startActivity(intent);
                 finish();
@@ -435,6 +443,35 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
         @Override
         public void hideLoading() {
 
+        }
+
+        @Override
+        public void onRequestSuccess() {
+
+        }
+
+        @Override
+        public void onRequestError(String errorMsg, String methodName) {
+            hideProcess();
+            UIUtils.showToastSafe(StringUtils.isEmpty(errorMsg) ? ToastConstant.TOAST_REQUEST_ERROR : errorMsg);
+        }
+    };
+
+    private NormalView<BaseEntity<String>> cancelView = new NormalView<BaseEntity<String>>() {
+        @Override
+        public void onSuccess(BaseEntity<String> entity) {
+            System.out.println("cancelView---->"+entity.getData());
+            finish();
+        }
+
+        @Override
+        public void showLoading() {
+            showProcess("正在取消订单");
+        }
+
+        @Override
+        public void hideLoading() {
+            hideProcess();
         }
 
         @Override
@@ -477,6 +514,18 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
         lockCarInfo();
     }
 
+    private void cancelOrder() {
+        DeleteOrderRequest request = new DeleteOrderRequest();
+        DeleteOrderRequest.Query query = new DeleteOrderRequest.Query();
+        query.setApiId("HC020303");
+        query.setID(orderInfo.getCode());
+        query.setCustomerID(userInfo.getUserId());
+
+        request.setQuery(query);
+
+        cancelController.sendRequest(HttpAction.ACTION_DELETE_ORDER, request);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -487,8 +536,29 @@ public class CallingOrderInfoActivity extends BaseActivity implements View.OnCli
             case R.id.tv_pay:
                 toPay();
                 break;
+            case R.id.right:
+                MaterialDialog dialog = new MaterialDialog(this);
+                dialog.setTitle("提示");
+                dialog.setMessage("确定要取消订单吗");
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        cancelOrder();
+                    }
+                });
+                dialog.show();
+                break;
         }
     }
+
 
     /**
      *  缩放移动地图，保证所有自定义marker在可视范围中。

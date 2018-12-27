@@ -452,6 +452,8 @@ public class CompleteOrderInfoActivity extends BaseActivity implements View.OnCl
             hideProcess();
             System.out.println("normalView---->"+entity.getData());
             UIUtils.showToastSafe( "集合信息更新成功");
+            editable = false;
+            initAggregateInfo();
         }
 
         @Override

@@ -34,4 +34,5 @@ public class HttpAction {
     public final static String ACTION_DELETE_ORDER = "ACTION_DELETE_ORDER";
     public final static String ACTION_CANCEL_ORDER = "ACTION_CANCEL_ORDER";
     public final static String ACTION_UPDATE_AGGREGATE_INFO = "ACTION_UPDATE_AGGREGATE_INFO";
+    public final static String ACTION_GET_NEAR_CAR_LIST = "ACTION_GET_NEAR_CAR_LIST";
 }

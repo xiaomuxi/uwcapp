@@ -1,1 +1,1 @@
-include ':app', ':NetLibrary', ':easeui'
+include ':app', ':NetLibrary', ':greendaogenerator'

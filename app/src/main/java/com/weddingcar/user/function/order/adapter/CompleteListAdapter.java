@@ -3,6 +3,7 @@ package com.weddingcar.user.function.order.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,7 +13,6 @@ import com.network.library.bean.order.response.OrderListEntity;
 import com.weddingcar.user.R;
 import com.weddingcar.user.common.base.adapter.MyBaseAdapter;
 import com.weddingcar.user.common.config.Config;
-import com.weddingcar.user.common.ui.CircleImageView;
 import com.weddingcar.user.common.utils.StringUtils;
 import com.weddingcar.user.common.utils.UIUtils;
 
@@ -34,7 +34,7 @@ public class CompleteListAdapter extends MyBaseAdapter<OrderListEntity.Data>{
     protected View getView(int position, View convertView, ViewGroup parent, ViewHolder holder) {
         TextView tv_order_num = (TextView) convertView.findViewById(R.id.tv_order_num);
         TextView tv_username = (TextView) convertView.findViewById(R.id.tv_username);
-        CircleImageView iv_header = (CircleImageView) convertView.findViewById(R.id.iv_header);
+        ImageView iv_header = (ImageView) convertView.findViewById(R.id.iv_header);
         TextView tv_date = (TextView) convertView.findViewById(R.id.tv_date);
         TextView tv_car_brand = (TextView) convertView.findViewById(R.id.tv_car_brand);
         TextView tv_hours = (TextView) convertView.findViewById(R.id.tv_hours);
@@ -48,7 +48,7 @@ public class CompleteListAdapter extends MyBaseAdapter<OrderListEntity.Data>{
         tv_order_num.setText(mContext.getResources().getString(R.string.text_item_order_num, item.getCode()));
         tv_username.setText(StringUtils.isEmpty(item.getGroomName())?"--":item.getGroomName());
         RequestOptions options = new RequestOptions();
-        Glide.with(UIUtils.getContext()).load(Config.getUserAvatorBaseUrl() + item.getImagePathMain()).apply(options).into(iv_header);
+        Glide.with(UIUtils.getContext()).load(Config.getCarModelUrl() + item.getImagePathMain()).apply(options).into(iv_header);
         tv_date.setText(getTime(item.getTheWeddingDateString()));
         tv_car_brand.setText(StringUtils.checkString(item.getCarBrandName())+StringUtils.checkString(item.getCarModelName()));
         tv_hours.setText(mContext.getResources().getString(R.string.text_car_hours, item.getHourChoose()+""));

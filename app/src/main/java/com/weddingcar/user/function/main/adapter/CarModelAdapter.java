@@ -34,7 +34,7 @@ public class CarModelAdapter extends MyBaseAdapter<CarModelEntity.Data>{
         TextView tv_car_count = (TextView) convertView.findViewById(R.id.tv_car_count);
 
         RequestOptions options = new RequestOptions();
-        Glide.with(UIUtils.getContext()).load(Config.getCarBrandsBaseUrl() + data.getImagePathMain()).apply(options).into(iv_model);
+        Glide.with(UIUtils.getContext()).load(Config.getCarModelUrl() + data.getImagePathMain()).apply(options).into(iv_model);
         tv_model_name.setText(data.getModelName());
         tv_money.setText(mContext.getResources().getString(R.string.text_car_model_money, data.getPriceReference()+""));
         tv_car_count.setText(mContext.getResources().getString(R.string.text_car_model_count, data.getNumber()+""));

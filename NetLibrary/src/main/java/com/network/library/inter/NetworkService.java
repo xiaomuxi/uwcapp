@@ -2,6 +2,7 @@ package com.network.library.inter;
 
 import com.network.library.bean.BaseEntity;
 import com.network.library.bean.main.response.CarGroupEntity;
+import com.network.library.bean.main.response.CarListEntity;
 import com.network.library.bean.main.response.CarModelEntity;
 import com.network.library.bean.main.response.SendOrderEntity;
 import com.network.library.bean.mine.response.BalanceDetailEntity;
@@ -159,6 +160,9 @@ public interface NetworkService {
 
     @GET("ljwy/JSON/HcPlApi03.aspx")
     Observable<BaseEntity<String>> cancelOrder(@QueryMap Map<String, String> map);
+
+    @GET("ljwy/JSON/HcPlApi01.aspx")
+    Observable<CarListEntity> getNearCarList(@QueryMap Map<String, String> map);
 
     @FormUrlEncoded
     @POST("ljwy/JSON/HcPlApi03.aspx")

@@ -81,10 +81,10 @@
         <!--ali push-->
         <meta-data
             android:name="com.alibaba.app.appkey"
-            android:value="25136436" /> <!-- 请填写你自己的- appKey -->
+            android:value="25476200" /> <!-- 请填写你自己的- appKey -->
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="06348e8490f3fc669e8b511a22cc36a9" /> <!-- 请填写你自己的appSecret -->
+            android:value="fb7b86ebce7a79e81d20f0ec7d751270" /> <!-- 请填写你自己的appSecret -->
 
         <service android:name="com.amap.api.location.APSService"/>
         <service
@@ -307,6 +307,7 @@
         <activity android:name=".function.order.activity.CompleteOrderInfoActivity" />
         <activity android:name=".function.order.activity.TodayOrderInfoActivity" />
         <activity android:name=".function.order.activity.DoneOrderInfoActivity" />
+        <activity android:name=".function.main.activity.MessageActivity" />
     </application>
 
 </manifest>
